@@ -1,6 +1,4 @@
-FROM postgres:10.3-alpine@sha256:b06cdddba62f1550a1c674270814e72eaa8734d95912019b4ddc288b650ad67d
-
-MAINTAINER Leonardo Gatica <lgatica@protonmail.com>
+FROM postgres:11
 
 RUN apk add --no-cache py2-pip && pip install awscli && mkdir /backup
 

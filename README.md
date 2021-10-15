@@ -1,9 +1,5 @@
 # pgdump-s3
 
-[![dockeri.co](http://dockeri.co/image/lgatica/pgdump-s3)](https://hub.docker.com/r/lgatica/pgdump-s3/)
-
-[![Build Status](https://travis-ci.org/lgaticaq/pgdump-s3.svg?branch=master)](https://travis-ci.org/lgaticaq/pgdump-s3)
-
 > Docker Image with Alpine Linux, pg_dump and awscli for backup postgres database to s3
 
 ## Use
@@ -20,7 +16,7 @@ docker run -d --name pgdump \
   -e "AWS_DEFAULT_REGION=us-west-1"
   -e "S3_BUCKET=your_aws_bucket"
   -e "BACKUP_CRON_SCHEDULE=0 2 * * *"
-  lgatica/pgdump-s3
+  gatewayfm/pg-dump-s3
 ```
 
 ### Inmediatic backup
@@ -32,7 +28,7 @@ docker run -d --name pgdump \
   -e "AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key"
   -e "AWS_DEFAULT_REGION=us-west-1"
   -e "S3_BUCKET=your_aws_bucket"
-  lgatica/pgdump-s3
+  gatewayfm/pg-dump-s3
 ```
 
 ## IAM Policity
