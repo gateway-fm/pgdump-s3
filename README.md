@@ -4,21 +4,6 @@
 
 ## Use
 
-### Periodic backup
-
-Run every day at 2 am
-
-```bash
-docker run -d --name pgdump \
-  -e "POSTGRESQL_URI=postgres://user:pass@host:port/dbname"
-  -e "AWS_ACCESS_KEY_ID=your_aws_access_key"
-  -e "AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key"
-  -e "AWS_DEFAULT_REGION=us-west-1"
-  -e "S3_BUCKET=your_aws_bucket"
-  -e "BACKUP_CRON_SCHEDULE=0 2 * * *"
-  gatewayfm/pg-dump-s3
-```
-
 ### Inmediatic backup
 
 ```bash
@@ -63,10 +48,6 @@ You need to add a user with the following policies. Be sure to change `your_buck
     ]
 }
 ```
-
-## Extra environmnet
-
-- `MAX_BACKUPS` - Default not set. If set doing it keeps the last n backups in /backup
 
 ## License
 

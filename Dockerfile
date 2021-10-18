@@ -1,8 +1,8 @@
-FROM postgres:11
+FROM postgres:11-alpine
 
-RUN apk add --no-cache py2-pip && pip install awscli && mkdir /backup
+RUN apk add --no-cache py3-pip && pip install awscli && mkdir /backup
 
-ENV AWS_DEFAULT_REGION=us-east-1
+ENV AWS_DEFAULT_REGION=eu-north-1
 
 COPY entrypoint.sh /usr/local/bin/entrypoint
 COPY backup.sh /usr/local/bin/backup
