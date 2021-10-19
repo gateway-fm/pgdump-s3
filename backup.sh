@@ -1,10 +1,11 @@
 #!/usr/bin/env sh
 
-PGDUMP_CMD=`python /usr/local/bin/pguri`
 BACKUP_NAME="$(date -u +%Y-%m-%d_%H-%M-%S)_UTC.gz"
 
 # Run backup
-eval $PGDUMP_CMD
+
+pg_dump -d $POSTGRESQL_URI > /backup/latest.dump
+
 # Compress backup
 cd /backup/ && tar -cvzf "${BACKUP_NAME}" latest.dump
 # Upload backup
