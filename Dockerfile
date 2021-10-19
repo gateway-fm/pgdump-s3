@@ -1,6 +1,6 @@
 FROM postgres:11-alpine
 
-RUN apk add --no-cache py3-pip && pip3 install awscliv2 && mkdir /backup
+RUN apk add --no-cache py3-pip && pip3 install awscli && mkdir /backup
 
 ENV AWS_DEFAULT_REGION=eu-north-1
 
