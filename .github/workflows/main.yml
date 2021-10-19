@@ -32,8 +32,8 @@ jobs:
           context: .
           push: true
           tags: |
-            gatewayfm/pgdump-s3:${{ github.sha }}
-            gatewayfm/pgdump-s3:latest
+            gatewayfm/pg-dump-s3:${{ github.sha }}
+            gatewayfm/pg-dump-s3:latest
 
       - name: Send notification to Slack
         uses: skolobov/gh-action-slack@v1
