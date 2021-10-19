@@ -1,14 +1,9 @@
----
-name: Build and push pgdum docker image
+name: Build and push pgdump docker image
 
 on:
   push:
-  pull_request:
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
+    branches:
+      - master
 
 jobs:
 
