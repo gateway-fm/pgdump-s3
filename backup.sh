@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 
-BACKUP_NAME="$(date -u +%Y-%m-%d_%H-%M-%S)_UTC.gz"
+set +e
+
+BACKUP_NAME="$(date -u +%Y-%m-%d_%H-%M)_UTC.gz"
 
 # Run backup
 
@@ -12,3 +14,5 @@ cd /backup/ && tar -cvzf "${BACKUP_NAME}" latest.dump
 aws s3 cp "/backup/${BACKUP_NAME}" "s3://${S3_BUCKET}/${BACKUP_NAME}"
 # Delete temp files
 rm -rf /backup/latest.dump
+
+exec "$@"
