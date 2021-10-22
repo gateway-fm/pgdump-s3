@@ -6,6 +6,4 @@ ENV AWS_DEFAULT_REGION=eu-north-1
 
 COPY backup.sh /usr/local/bin/backup
 
-VOLUME /backup
-
 CMD /usr/local/bin/backup
