@@ -1,9 +1,9 @@
 FROM postgres:11-alpine
 
-RUN apk add --no-cache py3-pip && pip3 install awscli && mkdir /backup
+RUN apk add --no-cache py3-pip jq && pip3 install awscli && mkdir /backup
 
 ENV AWS_DEFAULT_REGION=eu-north-1
 
-COPY backup.sh /usr/local/bin/backup
+COPY backup check_backup restore /usr/local/bin/
 
 CMD /usr/local/bin/backup
