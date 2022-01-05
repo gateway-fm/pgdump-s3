@@ -6,14 +6,14 @@ set +e
 aws s3 cp s3://${S3_BUCKET_BACKUPS_DB}/${BACKUP_FILE} .
 gunzip -c ${BACKUP_FILE} > latest.dump
 
+POSTGRESQL_URI="postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_DNS_NAME}:${DB_PORT}"
+
 # close active sessions
-psql ${POSTGRESQL_URI} -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${DB_NAME}' AND pid <> pg_backend_pid();"
+psql ${POSTGRESQL_URI}/postgres -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${DB_NAME}' AND pid <> pg_backend_pid();"
 
 # recreate empty db
-psql ${POSTGRESQL_URI} -c "drop database ${DB_NAME}"
-psql ${POSTGRESQL_URI} -c "create database ${DB_NAME}"
+psql ${POSTGRESQL_URI}/postgres -c "drop database ${DB_NAME}"
+psql ${POSTGRESQL_URI}/postgres -c "create database ${DB_NAME}"
 
-# push dump
-psql ${POSTGRESQL_URI} --dbname "${DB_NAME}" -f latest.dump
-
-exec "$@"
+# restore dump
+psql ${POSTGRESQL_URI}/${DB_NAME} < latest.dump
