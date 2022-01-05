@@ -2,7 +2,7 @@
 
 set +e
 
-db_min_size=10 # size in kb 10 bytes
+db_min_size=5000 # size in kb 5kb
 
 # check backup exists
 dbfile=$(aws s3api head-object --bucket ${S3_BUCKET_BACKUPS_DB} --key ${BACKUP_FILE} --output json || echo '{"ContentLength": 0}')
