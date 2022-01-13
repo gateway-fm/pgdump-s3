@@ -2,18 +2,20 @@
 
 set +e
 
-# download backup archive from s3 bucket
+echo "Downloading backup archive from s3 bucket"
 aws s3 cp s3://${S3_BUCKET_BACKUPS_DB}/${BACKUP_FILE} .
 gunzip -c ${BACKUP_FILE} > latest.dump
 
 POSTGRESQL_URI="postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_DNS_NAME}:${DB_PORT}"
 
-# close active sessions
+echo "Closing active sessions"
 psql ${POSTGRESQL_URI}/postgres -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${DB_NAME}' AND pid <> pg_backend_pid();"
 
-# recreate empty db
+echo "Dropping existing database ${DB_NAME}"
 psql ${POSTGRESQL_URI}/postgres -c "drop database ${DB_NAME}"
+
+echo "Creating database ${DB_NAME}"
 psql ${POSTGRESQL_URI}/postgres -c "create database ${DB_NAME}"
 
-# restore dump
+echo "Restoring dump"
 psql ${POSTGRESQL_URI}/${DB_NAME} < latest.dump
