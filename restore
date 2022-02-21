@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-set +e
+set -e
 
 echo "Downloading backup archive from s3 bucket"
 aws s3 cp s3://${S3_BUCKET_BACKUPS_DB}/${BACKUP_FILE} .
