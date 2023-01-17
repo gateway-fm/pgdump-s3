@@ -59,7 +59,7 @@ jobs:
         with:
           context: .
           push: true
-          args: --build-arg PG_VERSION=12
+          build-args: PG_VERSION=12
           tags: |
             gatewayfm/pg-dump-s3:12
 
