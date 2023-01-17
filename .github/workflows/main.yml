@@ -74,3 +74,38 @@ jobs:
 
       - name: Clean workspace
         uses: AutoModality/action-clean@v1.1.0
+
+  build-14:
+    name: v14
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - uses: docker/login-action@v1
+        name: Login to Docker Hub
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: v12
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          build-args: PG_VERSION=14
+          tags: |
+            gatewayfm/pg-dump-s3:14
+
+      - name: Send notification to Slack
+        uses: skolobov/gh-action-slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_DEPLOYS }}
+        if: failure()
+
+      - name: Clean workspace
+        uses: AutoModality/action-clean@v1.1.0
