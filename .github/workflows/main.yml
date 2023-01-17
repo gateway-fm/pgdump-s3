@@ -24,7 +24,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          build-args: --build-arg PG_VERSION=11
+          build-args: PG_VERSION=11
           push: true
           tags: |
             gatewayfm/pg-dump-s3:11
