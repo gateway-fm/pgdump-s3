@@ -1,4 +1,5 @@
-FROM postgres:11-alpine
+ARG PG_VERSION=11
+FROM postgres:${PG_VERSION}-alpine
 
 RUN apk add --no-cache py3-pip jq && pip3 install awscli && mkdir /backup
 

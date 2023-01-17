@@ -3,17 +3,50 @@ name: Build and push pgdump docker image
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
-
-  build:
+  build-11:
     name: Build and push Docker image
-    if: ${{ github.ref == 'refs/heads/master' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - uses: docker/login-action@v1
+        name: Login to Docker Hub
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          args: --build-arg PG_VERSION=11
+          push: true
+          tags: |
+            gatewayfm/pg-dump-s3:11
+
+      - name: Send notification to Slack
+        uses: skolobov/gh-action-slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_DEPLOYS }}
+        if: failure()
+
+      - name: Clean workspace
+        uses: AutoModality/action-clean@v1.1.0
+  build-12:
+    name: Build and push Docker image
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
 
       - uses: docker/login-action@v1
         name: Login to Docker Hub
@@ -26,9 +59,9 @@ jobs:
         with:
           context: .
           push: true
+          args: --build-arg PG_VERSION=12
           tags: |
-            gatewayfm/pg-dump-s3:${{ github.sha }}
-            gatewayfm/pg-dump-s3:latest
+            gatewayfm/pg-dump-s3:12
 
       - name: Send notification to Slack
         uses: skolobov/gh-action-slack@v1
@@ -37,7 +70,7 @@ jobs:
           steps: ${{ toJson(steps) }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_DEPLOYS }}
-        if: always()
+        if: failure()
 
       - name: Clean workspace
         uses: AutoModality/action-clean@v1.1.0
